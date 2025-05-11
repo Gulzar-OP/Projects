@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wishlist</title>
+    <style>
+        .wishlist-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .wishlist-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 200px;
+            text-align: center;
+        }
+
+        .empty-message {
+            text-align: center;
+            font-size: 20px;
+        }
+
+        img {
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html">Index</a>
+    <a href="cart.html">Cart</a>
+    <a href="wishlist.html">Wishlist</a>
+
+    <div id="wishlist" class="wishlist-container"></div>
+    <div id="emptyMsg" class="empty-message" style="display:none;">
+        No items in wishlist.
+        <br />
+        <img src="https://cdn-icons-png.flaticon.com/512/4076/4076501.png" width="100" alt="Empty Wishlist">
+    </div>
+
+    <script>
+        const wishlistDiv = document.getElementById("wishlist");
+        const emptyMsg = document.getElementById("emptyMsg");
+
+        function loadWishlist() {
+            wishlistDiv.innerHTML = "";
+            const wishlist = JSON.parse(localStorage.getItem("wish")) || [];
+
+            if (wishlist.length === 0) {
+                emptyMsg.style.display = "block";
+                return;
+            } else {
+                emptyMsg.style.display = "none";
+            }
+
+            wishlist.forEach((product, index) => {
+                const div = document.createElement("div");
+                div.className = "wishlist-item";
+                div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <p>₹${product.price}</p>
+          <button onclick="removeFromWishlist(${index})">Remove</button>
+          <button onclick="moveToCart(${index})">Move to Cart</button>
+        `;
+                wishlistDiv.appendChild(div);
+            });
+        }
+
+        function removeFromWishlist(index) {
+            let wishlist = JSON.parse(localStorage.getItem("wish")) || [];
+            wishlist.splice(index, 1);
+            localStorage.setItem("wish", JSON.stringify(wishlist));
+            loadWishlist();
+        }
+
+        function moveToCart(index) {
+            let wishlist = JSON.parse(localStorage.getItem("wish")) || [];
+            let cart = JSON.parse(localStorage.getItem("Data")) || [];
+            const product = wishlist[index];
+
+            const alreadyInCart = cart.some(item => item.name === product.name);
+            if (!alreadyInCart) {
+                cart.push({ ...product, quantity: 1 });
+                localStorage.setItem("Data", JSON.stringify(cart));
+                alert(`${product.name} moved to cart ✅`);
+            } else {
+                alert(`${product.name} is already in your cart!`);
+            }
+
+            wishlist.splice(index, 1);
+            localStorage.setItem("wish", JSON.stringify(wishlist));
+            loadWishlist();
+        }
+
+        loadWishlist();
+    </script>
+</body>
+
+</html>

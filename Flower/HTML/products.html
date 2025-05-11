@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Flower Shop - Products</title>
+    <link rel="icon" type="image/jpg" href="/Flower/images/rose.jpg">
+
+    <link rel="stylesheet" href="/Flower/CSS/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Flower Collection</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="products.html">Shop</a>
+            <a href="cart.html">Cart</a>
+            <a href="checkout.html">Checkout</a>
+            <a href="wishlist.html">wishlist</a>
+        </nav>
+    </header>
+
+    <!-- 🔍 Search & Filter Controls -->
+    <section class="filter-controls">
+        <input type="text" id="searchInput" placeholder="Search flowers...">
+        <select id="priceFilter">
+            <option value="">Sort by Price</option>
+            <option value="low-high">Low to High</option>
+            <option value="high-low">High to Low</option>
+        </select>
+    </section>
+
+    <select id="categoryFilter" onchange="applyFilters()">
+        <option value="">All Categories</option>
+        <option value="Romantic">Romantic</option>
+        <option value="Birthday">Birthday</option>
+        <option value="Get Well">Get Well</option>
+        <option value="Sympathy">Sympathy</option>
+        <option value="Anniversary">Anniversary</option>
+    </select>
+
+
+    <section id="products" class="product-grid"></section>
+
+    <script>
+        const productsData = [
+            { name: "Red Rose", price: 100, image: "../images/rose.jpg", category: "Romantic" },
+            { name: "Tulip", price: 80, image: "../images/tulip.jpg", category: "Birthday" },
+            { name: "Sunflower", price: 70, image: "../images/sunflower.jpg", category: "Get Well" },
+            { name: "Lily", price: 120, image: "../images/lily.jpg", category: "Sympathy" },
+            { name: "Orchid", price: 150, image: "../images/orchid.jpg", category: "Anniversary" }
+        ];
+
+
+
+
+        const productsDiv = document.getElementById("products");
+        const searchInput = document.getElementById("searchInput");
+        const priceFilter = document.getElementById("priceFilter");
+
+        function renderProducts(data) {
+            productsDiv.innerHTML = "";  //pahle se kuch hoge to delete ho jayega
+            data.forEach(product => {
+                const div = document.createElement("div");
+                div.className = "product";
+                div.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-img">
+                    <h3>${product.name}</h3>
+                    <p>₹${product.price}</p>
+                    <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+                    <button onclick="addToWishlist('${product.name}', '${product.image}', ${product.price})">❤️ Wishlist</button>
+                    `;
+
+
+                productsDiv.appendChild(div);
+            });
+        }
+
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            alert(`${name} added to cart!`);
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function addToWishlist(name, image, price) {
+            const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+            wishlist.push({ name, image, price });
+            localStorage.setItem("wishlist", JSON.stringify(wishlist));
+            alert(`${name} added to wishlist`);
+        }
+
+
+        // 🔎 Search & Sort Logic
+        function applyFilters() {
+            let filtered = productsData.filter(p =>
+                p.name.toLowerCase().includes(searchInput.value.toLowerCase())
+            );
+
+            const selectedCategory = document.getElementById("categoryFilter").value;
+            if (selectedCategory) {
+                filtered = filtered.filter(p => p.category === selectedCategory);
+            }
+
+            if (priceFilter.value) {
+                filtered = filtered.filter(p => p.price <= priceFilter.value);
+            }
+
+            renderProducts(filtered);
+        }
+
+
+        // Event Listeners
+        searchInput.addEventListener("input", applyFilters);
+        priceFilter.addEventListener("change", applyFilters);
+
+        renderProducts(productsData);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Your Cart</title>
+    <link rel="icon" type="image/jpg" href="/Flower/images/rose.jpg">
+    <link rel="stylesheet" href="/Flower/CSS/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Your Cart</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="products.html">Shop</a>
+            <a href="cart.html">Cart</a>
+            <a href="checkout.html">Checkout</a>
+            <a href="wishlist.html">wishlist</a>
+        </nav>
+    </header>
+
+    <section id="cart-items"></section>
+    <h2 id="total-price"></h2>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Merge duplicates (if same item added multiple times)
+        const mergedCart = [];
+        cart.forEach(item => {
+            const existing = mergedCart.find(i => i.name === item.name);
+            if (existing) {
+                existing.quantity++;
+            } else {
+                mergedCart.push({ ...item, quantity: 1 });
+            }
+        });
+        cart = mergedCart;
+
+        const cartItems = document.getElementById('cart-items');
+        const totalPrice = document.getElementById('total-price');
+
+        function renderCart() {
+            cartItems.innerHTML = "";
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+
+                const div = document.createElement('div');
+                div.className="cart-container"
+                div.innerHTML = `
+          <p>
+            ${item.name} - ₹${item.price} x ${item.quantity} = ₹${itemTotal}
+            <br>
+            <br>
+            <button onclick="changeQty(${index}, 1)">+</button>
+            <button onclick="changeQty(${index}, -1)">-</button>
+            <button onclick="removeItem(${index})">Remove</button>
+          </p>
+          
+        `;
+                cartItems.appendChild(div);
+            });
+
+            totalPrice.textContent = `Total: ₹${total}`;
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function changeQty(index, delta) {
+            cart[index].quantity += delta;
+            if (cart[index].quantity < 1) {
+                cart.splice(index, 1); // remove item if quantity < 1
+            }
+            renderCart();
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+
+        renderCart();
+    </script>
+
+</body>
+
+</html>

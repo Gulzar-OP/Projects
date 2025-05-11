@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <a href="index.html">Go to Products</a>
+    <a href="cart.html">Go to Cart</a>
+    <a href="wishlist.html">Go to Wish List</a>
+
+    <div class="container">
+        <div class="image">
+            <img src="/Flower/images/rose.jpg" alt="rose" width="150">
+            <p>Name: Rose</p>
+            <button onclick="addToCart('Rose', 100, '/Flower/images/rose.jpg')">Add to Cart</button>
+            <button onclick="addToWishList('Rose', 100, '/Flower/images/rose.jpg')">Add to Wish List</button>
+        </div>
+        <div class="image">
+            <img src="/Flower/images/lily.jpg" alt="lily" width="150">
+            <p>Name: Lily</p>
+            <button onclick="addToCart('Lily', 100, '/Flower/images/lily.jpg')">Add to Cart</button>
+            <button onclick="addToWishList('Lily', 100, '/Flower/images/lily.jpg')">Add to Wish List</button>
+        </div>
+        <div class="image">
+            <img src="/Flower/images/tulip.jpg" alt="tulip" width="150">
+            <p>Name: Tulip</p>
+            <button onclick="addToCart('Tulip', 100, '/Flower/images/tulip.jpg')">Add to Cart</button>
+            <button onclick="addToWishList('Tulip', 100, '/Flower/images/tulip.jpg')">Add to Wish List</button>
+        </div>
+    </div>
+
+    <script>
+        function addToCart(name, price, image) {
+            let cart = JSON.parse(localStorage.getItem('cartData')) || [];
+
+            // Check if already in cart
+            const exists = cart.some(item => item.name === name);
+            if (exists) {
+                alert("Already in cart");
+                return;
+            }
+
+            cart.push({ name, price, image, quantity: 1 });
+            localStorage.setItem('cartData', JSON.stringify(cart));
+            alert("Added to cart ✅");
+        }
+
+        function addToWishList(name, price, image) {
+            let wishlist = JSON.parse(localStorage.getItem('wishlistData')) || [];
+
+            // Check if already in wishlist
+            const exists = wishlist.some(item => item.name === name);
+            if (exists) {
+                alert("Already in wishlist");
+                return;
+            }
+
+            wishlist.push({ name, price, image });
+            localStorage.setItem('wishlistData', JSON.stringify(wishlist));
+            alert("Added to wishlist 💖");
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart</title>
+  <style>
+    .cart-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .cart-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 220px;
+      text-align: center;
+    }
+    img {
+      width: 100px;
+    }
+    .quantity-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    button {
+      padding: 5px 10px;
+    }
+    .total {
+      margin-top: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html">Go to Products</a>
+  <a href="wishlist.html">Go to Wishlist</a>
+
+  <div id="cart" class="cart-container"></div>
+  <div id="total" class="total"></div>
+
+  <script>
+    function loadCart() {
+      const cart = JSON.parse(localStorage.getItem("cartData")) || [];
+      const cartDiv = document.getElementById("cart");
+      const totalDiv = document.getElementById("total");
+      cartDiv.innerHTML = "";
+      let totalPrice = 0;
+
+      if (cart.length === 0) {
+        cartDiv.innerHTML = "<p>Your cart is empty.</p>";
+        totalDiv.innerHTML = "";
+        return;
+      }
+
+      cart.forEach((product, index) => {
+        totalPrice += product.price * product.quantity;
+
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <p>₹${product.price} x ${product.quantity} = ₹${product.price * product.quantity}</p>
+          <div class="quantity-controls">
+            <button onclick="decreaseQty(${index})">-</button>
+            <span>${product.quantity}</span>
+            <button onclick="increaseQty(${index})">+</button>
+          </div>
+        `;
+        cartDiv.appendChild(div);
+      });
+
+      totalDiv.innerHTML = `Total Price: ₹${totalPrice}`;
+    }
+
+    function increaseQty(index) {
+      let cart = JSON.parse(localStorage.getItem("cartData")) || [];
+      cart[index].quantity += 1;
+      localStorage.setItem("cartData", JSON.stringify(cart));
+      loadCart();
+    }
+
+    function decreaseQty(index) {
+      let cart = JSON.parse(localStorage.getItem("cartData")) || [];
+      if (cart[index].quantity > 1) {
+        cart[index].quantity -= 1;
+      } else {
+        if (confirm("Remove item from cart?")) {
+          cart.splice(index, 1);
+        }
+      }
+      localStorage.setItem("cartData", JSON.stringify(cart));
+      loadCart();
+    }
+
+    loadCart();
+  </script>
+</body>
+</html>

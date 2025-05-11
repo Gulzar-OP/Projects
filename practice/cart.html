@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <a href="index.html">Index</a>
+    <a href="cart.html">Cart</a>
+    <a href="wishlist.html">Wishlist</a>
+
+    <div id="cart" class="cart-container"></div>
+    <div id="total" class="total"></div>
+
+
+    <script>
+        function Load() {
+            const cart = JSON.parse(localStorage.getItem('Data')) || [];
+            const cartDiv = document.getElementById("cart");
+            const totalDiv = document.getElementById("total");
+            cartDiv.innerHTML = "";
+            let total = 0;
+
+
+            cart.forEach((product,index) =>{
+                total += product.price * product.quantity;
+
+                const div = document.createElement("div");
+                div.className= "cart-list";
+                div.innerHTML = `
+                <h3>${product.name}</h3>
+                <p>${product.price} X ${product.quantity} = ${product.price * product.quantity} </p>
+                `;
+
+                cartDiv.appendChild(div);
+
+            });
+
+            totalDiv.innerHTML = `Total Price : ${total}`;
+        }
+        Load();
+    </script>
+</body>
+
+</html>

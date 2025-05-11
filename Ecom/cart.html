@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Your Cart</title>
+    <!-- <link rel="icon" type="image/jpg" href="/Flower/images/rose.jpg"> -->
+    <link rel="stylesheet" href="/Ecom/style.css">
+</head>
+
+<body>
+    <header>
+        <!-- <h1>Your Cart</h1> -->
+        <nav class="navbar flex container">
+            <a href="#" class="logo">
+                Buzz<span>Buy.</span>
+            </a>
+            <ul class="nav-links flex">
+                <li><a href="index.html" class="link link-active">Home</a></li>
+                <li><a href="#" class="link">Products</a></li>
+                <li><a href="#" class="link">About Us</a></li>
+                <li><a href="#" class="link">Contact Us</a></li>
+                <li><a href="cart.html" class="link">Cart</a></li>
+                
+
+                <li class="nav-icons flex">
+                    <a href="#" class="icon ">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </a>
+                    <a href="#" class="icon">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+                    <a href="#" class="icon icon-active">
+                        <i class="fa-solid fa-shopping-bag"></i>
+                    </a>
+                </li>
+            </ul>
+            <a href="#" class="hamburger">
+                <i class="fa-solid fa-bars"></i>
+            </a>
+        </nav>
+    </header>
+
+    <section id="cart-items"></section>
+    <h2 id="total-price"></h2>
+
+    <script>
+        let cart1 = JSON.parse(localStorage.getItem('cart1')) || [];
+
+        // Merge duplicates (if same item added multiple times)
+        const mergedCart = [];
+        cart1.forEach(item => {
+            const existing = mergedCart.find(i => i.name === item.name);
+            if (existing) {
+                existing.quantity++;
+            } else {
+                mergedCart.push({ ...item, quantity: 1 });
+            }
+        });
+        cart1 = mergedCart;
+
+        const cartItems = document.getElementById('cart-items');
+        const totalPrice = document.getElementById('total-price');
+
+        function renderCart() {
+            cartItems.innerHTML = "";
+            let total = 0;
+
+            cart1.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+
+                const div = document.createElement('div');
+                div.className="cart-container"
+                div.innerHTML = `
+          <p>
+            ${item.name} - ₹${item.price} x ${item.quantity} = ₹${itemTotal}
+            <br>
+            <br>
+            <button onclick="changeQty(${index}, 1)">+</button>
+            <button onclick="changeQty(${index}, -1)">-</button>
+            <button onclick="removeItem(${index})">Remove</button>
+          </p>
+          
+        `;
+                cartItems.appendChild(div);
+            });
+
+            totalPrice.textContent = `Total: ₹${total}`;
+            localStorage.setItem('cart1', JSON.stringify(cart1));
+        }
+
+        function changeQty(index, delta) {
+            cart1[index].quantity += delta;
+            if (cart1[index].quantity < 1) {
+                cart1.splice(index, 1); // remove item if quantity < 1
+            }
+            renderCart();
+        }
+
+        function removeItem(index) {
+            cart1.splice(index, 1);
+            renderCart();
+        }
+
+        renderCart();
+    </script>
+
+</body>
+
+</html>

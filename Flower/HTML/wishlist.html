@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/jpg" href="/Flower/images/rose.jpg">
+  <title>Wishlist</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #f8f9fa;
+    }
+
+    .back-link {
+      text-decoration: none;
+      font-size: 16px;
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #007bff;
+    }
+
+    .wishlist-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .wishlist-item {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      background: #fff;
+      width: 220px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: 0.3s ease;
+    }
+
+    .wishlist-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .wishlist-item img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .wishlist-item h3 {
+      font-size: 18px;
+      margin: 10px 0 5px;
+    }
+
+    .wishlist-item p {
+      color: #444;
+      margin-bottom: 10px;
+    }
+
+    .wishlist-item button {
+      margin: 5px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .wishlist-item button:hover {
+      opacity: 0.8;
+    }
+
+    .wishlist-item button:nth-child(5) {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .wishlist-item button:nth-child(6) {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .empty-message {
+      text-align: center;
+      font-size: 18px;
+      color: #666;
+      margin-top: 50px;
+    }
+
+    .empty-message img {
+      width: 80px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .wishlist-item {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="back-link" href="index.html">← Back to Products</a>
+
+  <div id="wishlist" class="wishlist-container"></div>
+  <div id="emptyMsg" class="empty-message" style="display:none;">
+    No items in wishlist.
+    <br />
+    <img src="https://cdn-icons-png.flaticon.com/512/4076/4076501.png" alt="Empty Wishlist">
+  </div>
+
+  <script>
+    const wishlistDiv = document.getElementById("wishlist");
+    const emptyMsg = document.getElementById("emptyMsg");
+
+    function loadWishlist() {
+      wishlistDiv.innerHTML = "";
+      const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+      if (wishlist.length === 0) {
+        emptyMsg.style.display = "block";
+        return;
+      } else {
+        emptyMsg.style.display = "none";
+      }
+
+      wishlist.forEach((product, index) => {
+        const div = document.createElement("div");
+        div.className = "wishlist-item";
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <p>₹${product.price}</p>
+          <button title="Remove from Wishlist" onclick="removeFromWishlist(${index})">Remove</button>
+          <button title="Move to Cart" onclick="moveToCart(${index})">Move to Cart</button>
+        `;
+        wishlistDiv.appendChild(div);
+      });
+    }
+
+    function removeFromWishlist(index) {
+      let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      wishlist.splice(index, 1);
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+      loadWishlist();
+    }
+
+    function moveToCart(index) {
+      let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      const product = wishlist[index];
+
+      // Check for duplicates
+      const existsInCart = cart.some(item => item.name === product.name);
+      if (!existsInCart) {
+        cart.push(product);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert(`${product.name} moved to cart ✅`);
+      } else {
+        alert(`${product.name} is already in your cart!`);
+      }
+
+      // Remove from wishlist
+      wishlist.splice(index, 1);
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+      loadWishlist();
+    }
+
+    loadWishlist();
+  </script>
+
+</body>
+</html>
