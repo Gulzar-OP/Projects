@@ -1,48 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <a href="index.html">Index</a>
-    <a href="cart.html">Cart</a>
-    <a href="wishlist.html">Wishlist</a>
-    <div class="container">
-        <div class="box">
-            <img src="/images/lily.jpg" alt="">
-            <p>Lily</p>
-            <button onclick="addCart('lily',40)">Add to Cart</button>
-            <button onclick="addwishlist('lily',40)">Add to Wishlist</button>
-        </div>
 
-        <div class="box">
-            <img src="/images/rose.jpg" alt="">
-            <p>Lily</p>
-            <button onclick="addCart('rose',50)">Add to Cart</button>
-            <button onclick="addwishlist('rose',50)">Add to Wishlist</button>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flower Shop</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="dialoge.css" />
+</head>
+
+<body>
+  <a href="index.html">Index</a>
+  <a href="cart.html">Cart</a>
+  <a href="wishlist.html">Wishlist</a>
+
+  <div class="container">
+    <div class="box">
+      <img src="/images/lily.jpg" alt="Lily Flower" />
+      <p>Lily</p>
+      <button onclick="showDialog('lily', 40)">Add to Cart</button>
+      <button onclick="addWishlist('lily', 40)">Add to Wishlist</button>
     </div>
 
-    <script>
-        
-        function addCart(name,price){
-            let data = JSON.parse(localStorage.getItem('Data')) || [];
+    <div class="box">
+      <img src="/images/rose.jpg" alt="Rose Flower" />
+      <p>Rose</p>
+      <button onclick="showDialog('rose', 50)">Add to Cart</button>
+      <button onclick="addWishlist('rose', 50)">Add to Wishlist</button>
+    </div>
+  </div>
 
-            data.push({name,price,quantity:1});
-            localStorage.setItem('Data',JSON.stringify(data));
-            alert("Added to Cart");
+  <!-- Custom Dialog -->
+  <div id="customDialog" class="dialog">
+    <div class="dialog-content">
+      <span class="close-btn" id="closeDialogBtn">&times;</span>
+      <h2>Confirmation</h2>
+      <p>Are you sure you want to add this item to your cart?</p>
+      <button id="confirmAddBtn">Yes, Add to Cart</button>
+    </div>
+  </div>
+
+  <script>
+    const dialog = document.getElementById('customDialog');
+    const closeBtn = document.getElementById('closeDialogBtn');
+    const confirmBtn = document.getElementById('confirmAddBtn');
+
+    let selectedItem = null;
+
+    function showDialog(name, price) {
+      selectedItem = { name, price };
+      dialog.style.display = 'block';
+    }
+
+    confirmBtn.onclick = () => {
+      if (selectedItem) {
+        addCart(selectedItem.name, selectedItem.price);
+        selectedItem = null;
+      }
+    };
+
+    closeBtn.onclick = () => {
+      dialog.style.display = 'none';
+    };
+
+    window.onclick = (e) => {
+      if (e.target == dialog) {
+        dialog.style.display = 'none';
+      }
+    };
+
+    window.onkeydown = (e) => {
+      if (e.key === 'Escape') {
+        dialog.style.display = 'none';
+      }
+    };
+
+    function addCart(name, price) {
+      let data = JSON.parse(localStorage.getItem('Data')) || [];
+      let found = false;
+
+      data = data.map(item => {
+        if (item.name === name) {
+          item.quantity += 1;
+          found = true;
         }
+        return item;
+      });
 
-        function addwishlist(name, price){
-            let wishlist = JSON.parse(localStorage.getItem('wish')) || [];
+      if (!found) {
+        data.push({ name, price, quantity: 1 });
+      }
 
-            wishlist.push({name,price});
-            localStorage.setItem('wish',JSON.stringify(wishlist))
-            alert("Added to wishlist");
-        }
-    </script>
+      localStorage.setItem('Data', JSON.stringify(data));
+      dialog.style.display = 'none';
+    }
+
+    function addWishlist(name, price) {
+      let wishlist = JSON.parse(localStorage.getItem('wish')) || [];
+
+      // Avoid duplicates
+      if (!wishlist.find(item => item.name === name)) {
+        wishlist.push({ name, price });
+        localStorage.setItem('wish', JSON.stringify(wishlist));
+        alert("Added to wishlist");
+      } else {
+        alert("Already in wishlist");
+      }
+    }
+  </script>
 </body>
+
 </html>
