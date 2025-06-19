@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Infinite Loopers</title>
+  <!-- <link rel="icon" href="images/logo_Restaurant.jpeg" type="image/jpeg"> -->
+  <link rel="stylesheet" href="css/team.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">Infinite<span> Loopers</span></div>
+
+      <!-- Regular Links -->
+      <ul class="nav-links">
+        <li class="hideOnMobile"><a href="home.html">Home</a></li>
+        <li class="hideOnMobile"><a href="project.html">Projects</a></li>
+        <li class="hideOnMobile"><a href="gallery.html">Gallery</a></li>
+        <li class="hideOnMobile"><a href="contact.html">Contact</a></li>
+        <li class="hideOnMobile"><a href="team.html">Team Members</a></li>
+      </ul>
+
+      <!-- Hamburger Button (outside of nav-links for better control) -->
+      <div class="menu-button" onclick="showSidebar()">
+        &#9776;
+      </div>
+
+      <!-- Sidebar for Mobile -->
+      <ul class="sidebar" id="sidebar">
+        <li onclick="hideSidebar()"><a href="#">&#10005;</a></li>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="project.html">Projects</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="team.html">Team Members</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section>
+    <div class="typing">
+      <span id="typed"></span>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <script>
+    function showSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.style.display = 'flex';
+    }
+
+    function hideSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.style.display = 'none';
+    }
+
+    // Typed.js setup
+    const options = {
+      strings: [
+        "WELCOME TO INFINITE LOOPERS",
+        "Crafting Beautiful Websites",
+        "Innovating Through Code",
+        "Empowering Young Minds"
+      ],
+      typeSpeed: 50,
+      backSpeed: 30,
+      loop: true
+    };
+
+    const typed = new Typed("#typed", options);
+  </script>
+</body>
+
+</html>

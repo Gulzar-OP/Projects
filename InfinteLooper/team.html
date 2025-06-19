@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Infinite Loopers</title>
+    <!-- <link rel="icon" href="images/logo_Restaurant.jpeg" type="image/jpeg"> -->
+    <link rel="stylesheet" href="css/team.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+  
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo">Infinite<span> Loopers</span></div>
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="team.html">Team</a></li>
+    </ul>
+    <div class="menu-button"><i class="fas fa-bars"></i></div>
+  </nav>
+
+  <section id="home" class="typing">
+    <div>Welcome to Infinite Loopers - We Code, We Build, We Innovate.</div>
+  </section>
+
+  <section id="team" class="team">
+    <h2>Meet Our Team</h2>
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <img src="https://via.placeholder.com/100" alt="Gulzar Hussain">
+          <h3>Gulzar Hussain</h3>
+          <p>Frontend Developer</p>
+        </div>
+        <div class="swiper-slide">
+          <img src="https://via.placeholder.com/100" alt="Ayesha Siddiqui">
+          <h3>Ayesha Siddiqui</h3>
+          <p>UI/UX Designer</p>
+        </div>
+        <div class="swiper-slide">
+          <img src="https://via.placeholder.com/100" alt="Ali Raza">
+          <h3>Ali Raza</h3>
+          <p>Backend Developer</p>
+        </div>
+        <div class="swiper-slide">
+          <img src="https://via.placeholder.com/100" alt="Mehak Khan">
+          <h3>Mehak Khan</h3>
+          <p>Project Manager</p>
+        </div>
+        <div class="swiper-slide">
+          <img src="https://via.placeholder.com/100" alt="Ali Raza">
+          <h3>Ali Raza</h3>
+          <p>Backend Developer</p>
+        </div>
+        <div class="swiper-slide">
+          <img src="https://via.placeholder.com/100" alt="Mehak Khan">
+          <h3>Mehak Khan</h3>
+          <p>Project Manager</p>
+        </div>
+      </div>
+      
+    </div>
+    <div class="swiper-pagination"></div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script>
+    const swiper = new Swiper(".mySwiper", {
+      slidesPerView: 1,
+      spaceBetween: 30,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+        },
+        768: {
+          slidesPerView: 3,
+        },
+        1024: {
+          slidesPerView: 4,
+        },
+      }
+    });
+  </script>
+</body>
+
+</html>

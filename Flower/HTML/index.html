@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Flower Shop</title>
-  <link rel="icon" type="image/jpg" href="/Flower/images/rose.jpg">
-  <link rel="stylesheet" href="/Flower/CSS/style.css">
+  <link rel="icon" type="image/jpg" href="/images/rose.jpg">
+  <link rel="stylesheet" href="/CSS/style.css">
+  <link rel="stylesheet" href="/CSS/dialoge.css">
 </head>
+
 <body>
+  <style>
+    img {
+      height: 180px;
+      width: 250px;
+      border-radius: 10px;
+    }
+  </style>
+
   <header>
     <h1>Blossom Boutique</h1>
     <nav>
@@ -27,68 +38,167 @@
     <h3>Featured Flowers</h3>
     <div class="products">
       <div class="product-card">
-        <img src="/Flower/images/rose.jpg" alt="Rose Bouquet">
+        <img src="/images/rose.jpg" alt="Rose Bouquet">
         <h4>Rose Bouquet</h4>
         <p>₹499</p>
-        <button onclick="addToCart('Rose Bouquet', 499)">Add to Cart</button>
+        <button onclick="showDialog('Rose Bouquet', 499 ,'/images/rose.jpg')">Add to Cart</button>
+        <button onclick="showWishlistDialog('Rose Bouquet', 499,'/images/rose.jpg')" class="wish">Add to Wishlist</button>
       </div>
 
       <div class="product-card">
-        <img src="/Flower/images/rose.jpg" alt="Rose Bouquet">
+        <img src="/images/rose.jpg" alt="Rose Bouquet">
         <h4>Rose Bouquet</h4>
         <p>₹499</p>
-        <button onclick="addToCart('Rose Bouquet', 499)">Add to Cart</button>
+        <button onclick="showDialog('Rose Bouquet', 499)">Add to Cart</button>
+        <button onclick="showWishlistDialog('Rose Bouquet', 499)" class="wish">Add to Wishlist</button>
       </div>
 
       <div class="product-card">
-        <img src="/Flower/images/rose.jpg" alt="Rose Bouquet">
+        <img src="/images/rose.jpg" alt="Rose Bouquet">
         <h4>Rose Bouquet</h4>
         <p>₹499</p>
-        <button onclick="addToCart('Rose Bouquet', 499)">Add to Cart</button>
+        <button onclick="showDialog('Rose Bouquet', 499)">Add to Cart</button>
+        <button onclick="showWishlistDialog('Rose Bouquet', 499)" class="wish">Add to Wishlist</button>
       </div>
 
       <div class="product-card">
-        <img src="/Flower/images/rose.jpg" alt="Rose Bouquet">
-        <h4>Rose Bouquet</h4>
-        <p>₹499</p>
-        <button onclick="addToCart('Rose Bouquet', 499)">Add to Cart</button>
+        <img src="/images/pink_rose.jpg" alt="pink_rose">
+        <h4>Pink Rose</h4>
+        <p>₹199</p>
+        <button onclick="showDialog('Pink Rose', 199)">Add to Cart</button>
+        <button onclick="showWishlistDialog('Pink Rose', 199)" class="wish">Add to Wishlist</button>
       </div>
 
       <div class="product-card">
-        <img src="/Flower/images/rose.jpg" alt="Rose Bouquet">
-        <h4>Rose Bouquet</h4>
-        <p>₹499</p>
-        <button onclick="addToCart('Rose Bouquet', 499)">Add to Cart</button>
+        <img src="/images/red_dhalia.jpg" alt="red_dhalia">
+        <h4>Red Dhalia</h4>
+        <p>₹200</p>
+        <button onclick="showDialog('red_dhalia', 200)">Add to Cart</button>
+        <button onclick="showWishlistDialog('Red Dhalia', 200)" class="wish">Add to Wishlist</button>
       </div>
 
       <div class="product-card">
-        <img src="/Flower/images/rose.jpg" alt="Rose Bouquet">
-        <h4>Rose Bouquet</h4>
-        <p>₹499</p>
-        <button onclick="addToCart('Rose Bouquet', 499)">Add to Cart</button>
+        <img src="/images/white_dhalia.jpg" alt="white_dhalia">
+        <h4>White Dhalia</h4>
+        <p>₹309</p>
+        <button onclick="showDialog('white_dhalia', 309)">Add to Cart</button>
+        <button onclick="showWishlistDialog('White Dhalia', 309)" class="wish">Add to Wishlist</button>
       </div>
 
       <div class="product-card">
-        <img src="/Flower/images/tulip.jpg" alt="Rose Bouquet">
+        <img src="/images/tulip.jpg" alt="Rose Bouquet">
         <h4>Rose Bouquet</h4>
         <p>₹499</p>
-        <button onclick="addToCart('Tulip Bouquet', 399)">Add to Cart</button>
+        <button onclick="showDialog('Tulip Bouquet', 199)">Add to Cart</button>
+        <button onclick="showWishlistDialog('tulip',199)" class="wish">Add to Wishlist</button>
       </div>
 
       <div class="product-card">
-        <img src="/Flower/images/lily.jpg" alt="Rose Bouquet">
+        <img src="/images/lily.jpg" alt="Rose Bouquet">
         <h4>Rose Bouquet</h4>
         <p>₹499</p>
-        <button onclick="addToCart('Lily Bouquet', 299)">Add to Cart</button>
+        <button onclick="showDialog('Lily Bouquet', 299)">Add to Cart</button>
+        <button onclick="showWishlistDialog('lily',299)" class="wish">Add to Wishlist</button>
       </div>
       <!-- Add more featured products -->
     </div>
   </section>
+  <!-- Custom Dialog -->
+
+  <div id="customDialog" class="dialog">
+    <div class="boxes">
+      <div class="dialog-content">
+        <span class="close-btn" id="closeDialogBtn">&times;</span>
+        <h2>Confirmation</h2>
+        <p>Are you sure you want to add this item to your cart?</p>
+        <button id="confirmAddBtn">Yes, Add to Cart</button>
+      </div>
+    </div>
+  </div>
 
   <footer>
     <p>&copy; 2025 Blossom Boutique</p>
   </footer>
 
-  <script src="/Flower/JS/script.js"></script>
+  <!-- <script src="/Flower/JS/script.js"></script> -->
+  <script>
+    const dialog = document.getElementById('customDialog');
+    const closeBtn = document.getElementById('closeDialogBtn');
+    const confirmBtn = document.getElementById('confirmAddBtn');
+
+    let selectedItem = null;
+
+    function showDialog(name, price,image) {
+      isWishlist = false;
+      selectedItem = { name, price,image };
+      dialog.querySelector('p').innerText = `Are you sure you want to add ${name} to your cart?`;
+      dialog.querySelector('h2').innerText = `Add ${name} to Cart`;
+      dialog.querySelector('button').innerText = `Yes, Add ${name} to Cart`;
+      dialog.style.display = 'block';
+    }
+    function showWishlistDialog(name, price, image) {
+      // alert(`${name} has been added to your wishlist!`);
+      isWishlist = true;
+      selectedItem = { name, price,image };
+
+      dialog.querySelector('p').innerText = `Are you sure you want to add ${name} to your wishlist?`;
+      dialog.querySelector('h2').innerText = `Add ${name} to Wishlist`;
+      dialog.querySelector('button').innerText = `Yes, Add ${name} to Wishlist`;
+      dialog.style.display = 'block';
+    }
+
+    confirmBtn.onclick = () => {
+      if (!selectedItem) return;
+
+      if (isWishlist) {
+        addWishlist(selectedItem.name, selectedItem.price, selectedItem.image);
+
+      } else {
+        addCart(selectedItem.name, selectedItem.price, selectedItem.image);
+      }
+      selectedItem = null;
+    };
+
+    closeBtn.onclick = () => {
+      dialog.style.display = 'none';
+    };
+
+    function addCart(name, price, image) {
+      let data = JSON.parse(localStorage.getItem('FlowerData')) || [];
+      let found = false;
+
+      data = data.map(item => {
+        if (item.name === name) {
+          item.quantity += 1;
+          found = true;
+        }
+        return item;
+      });
+
+      if (!found) {
+        data.push({ name, price, image, quantity: 1 });
+      }
+
+      localStorage.setItem('FlowerData', JSON.stringify(data));
+      dialog.style.display = 'none';
+    }
+
+    function addWishlist(name, price,image) {
+      let wishlist = JSON.parse(localStorage.getItem('FlowerWish')) || [];
+
+      // Avoid duplicates
+      if (!wishlist.find(item => item.name === name)) {
+        wishlist.push({ name, price ,image});
+        localStorage.setItem('FlowerWish', JSON.stringify(wishlist));
+        // alert("Added to wishlist");
+        // showWishlistDialog(name, price);
+        dialog.style.display = 'none';
+      } else {
+        // showWishlistDialog(name, price);
+        dialog.style.display = 'none';
+      }
+    }
+  </script>
 </body>
+
 </html>

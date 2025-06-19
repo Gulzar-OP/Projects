@@ -16,17 +16,17 @@
 
     <div class="container">
         <div class="box">
-            <img src="/images/lily.jpg" alt="Lily Flower" />
+            <img src="lily.jpg" alt="Lily Flower" />
             <p>Lily</p>
             <button onclick="showDialog('lily', 40)">Add to Cart</button>
-            <button onclick="addWishlist('lily', 40)">Add to Wishlist</button>
+            <button onclick="addWishlist('lily', 40,'lily.jpg')">Add to Wishlist</button>
         </div>
 
         <div class="box">
-            <img src="/images/rose.jpg" alt="Rose Flower" />
+            <img src="rose.jpg" alt="Rose Flower" />
             <p>Rose</p>
             <button onclick="showDialog('rose', 50)">Add to Cart</button>
-            <button onclick="showWishlistDialog('rose', 50)">Add to Wishlist</button>
+            <button onclick="showWishlistDialog('rose', 50,'rose.jpg')">Add to Wishlist</button>
         </div>
     </div>
 
@@ -58,7 +58,7 @@
             dialog.querySelector('button').innerText = `Yes, Add ${name} to Cart`;
             dialog.style.display = 'block';
         }
-        function showWishlistDialog(name, price) {
+        function showWishlistDialog(name, price,image) {
             // alert(`${name} has been added to your wishlist!`);
             isWishlist = true;
             selectedItem = { name, price };

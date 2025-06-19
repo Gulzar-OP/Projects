@@ -26,9 +26,15 @@ nav a {
 .featured {
     padding: 20px;
 }
+.featured h3{
+    text-align: center;
+    font-size: 2rem;
+}
 
 .products {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
     flex-wrap: wrap;
 }
@@ -36,9 +42,11 @@ nav a {
 .product-card {
     border: 1px solid #ccc;
     padding: 10px;
-    width: 200px;
+    width: 220px;
     text-align: center;
     height: 300px;
+    border-radius: 10px;
+    box-shadow:  5px 5px 10px black;
 }
 
 .product-card img {
@@ -49,9 +57,13 @@ nav a {
 button {
     background: green;
     color: white;
-    padding: 10px;
+    padding: 8px;
     border: none;
+    border-radius: 10px;
     cursor: pointer;
+}
+.wish{
+    background-color: #ff4d4d;
 }
 
 

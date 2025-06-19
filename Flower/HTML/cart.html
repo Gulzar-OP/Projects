@@ -3,8 +3,8 @@
 
 <head>
     <title>Your Cart</title>
-    <link rel="icon" type="image/jpg" href="/Flower/images/rose.jpg">
-    <link rel="stylesheet" href="/Flower/CSS/style.css">
+    <link rel="icon" type="image/jpg" href="/images/rose.jpg">
+    <link rel="stylesheet" href="/CSS/style.css">
 </head>
 
 <body>
@@ -23,7 +23,7 @@
     <h2 id="total-price"></h2>
 
     <script>
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let cart = JSON.parse(localStorage.getItem('FlowerData')) || [];
 
         // Merge duplicates (if same item added multiple times)
         const mergedCart = [];
@@ -51,6 +51,7 @@
                 const div = document.createElement('div');
                 div.className="cart-container"
                 div.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
           <p>
             ${item.name} - ₹${item.price} x ${item.quantity} = ₹${itemTotal}
             <br>
@@ -65,7 +66,7 @@
             });
 
             totalPrice.textContent = `Total: ₹${total}`;
-            localStorage.setItem('cart', JSON.stringify(cart));
+            localStorage.setItem('FlowerData', JSON.stringify(cart));
         }
 
         function changeQty(index, delta) {
